@@ -201,7 +201,7 @@ var bottom_bar = new Image();
 bottom_bar.src = 'http://s2js.com/img/etc/flappybottom.png';
 
 // var bird = new MySprite('http://s2js.com/img/etc/flappybird.png');
-var bird = new MySprite('https://cdn.shopify.com/s/files/1/0632/2939/5192/files/test2.png');
+var bird = new MySprite('https://cdn.shopify.com/s/files/1/0632/2939/5192/files/wwwr.png');
 bird.x = myCanvas.width / 3;
 bird.y = myCanvas.height / 2;
 
