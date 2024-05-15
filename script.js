@@ -1,3 +1,4 @@
+const myCanvas = document.getElementById('myCanvas'); // Add this line to reference the canvas element
 const ctx = myCanvas.getContext('2d'); // Get the 2D context from the canvas
 const FPS = 40; // Frames per second
 const jumpAmount = -10; // Amount of upward velocity when the bird jumps
@@ -8,6 +9,7 @@ let gameMode = 'prestart'; // Game state: 'prestart', 'running', 'over'
 let lastGameTime; // Last time the game was running
 let bottomBarOffset = 0; // Offset for the moving bottom bar
 let pipes = []; // Array to hold the pipes
+
 
 class MySprite {
   constructor(imgUrl) {
@@ -222,7 +224,8 @@ const doAFrame = () => {
 const bottomBar = new Image();
 bottomBar.src = 'http://s2js.com/img/etc/flappybottom.png';
 
-const bird = new MySprite('https://cdn.shopify.com/s/files/1/0632/2939/5192/files/test2.png');
+// const bird = new MySprite('https://cdn.shopify.com/s/files/1/0632/2939/5192/files/test2.png');
+const bird = new MySprite('https://cdn.shopify.com/s/files/1/0632/2939/5192/files/wwwr.png');
 bird.x = myCanvas.width / 3;
 bird.y = myCanvas.height / 2;
 
