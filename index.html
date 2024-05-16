@@ -31,14 +31,29 @@
       background-size: 100%;
       height: 95%;
     }
+    .character-selection {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .character-selection img {
+      width: 50px;
+      height: 50px;
+      margin: 0 10px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <div class="link-container">
     <a href="index.html">Flappy Horse</a>
-    <a href="2048/index.html">2048 Game</a>
+    <!-- <a href="2048/index.html">2048 Game</a> -->
+  </div>
+  <div class="character-selection">
+    <img id="dragon" src="https://cdn.shopify.com/s/files/1/0632/2939/5192/files/test2.png" alt="Flappy Dragon">
+    <img id="horse" src="https://cdn.shopify.com/s/files/1/0632/2939/5192/files/wwwr.png" alt="Flappy Horse">
   </div>
   <canvas id="myCanvas" width="320" height="480"></canvas>
-  <script src="script.js"></script>
+  <script src="notes.js"></script>
 </body>
 </html>
