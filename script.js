@@ -21,6 +21,7 @@ const heartImgUrl = "https://cdn-icons-png.flaticon.com/512/833/833472.png";
 const heartImg = new Image();
 heartImg.src = heartImgUrl;
 
+
 class MySprite {
   constructor(imgUrl) {
     this.x = 100;

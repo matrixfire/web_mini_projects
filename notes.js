@@ -92,26 +92,30 @@ class Entity {
 // Class for the bird entity
 class Bird extends Entity {
   constructor(imgUrl) {
+    // Initialize the bird entity at a specific position with given dimensions and image URL
     super(myCanvas.width / 3, myCanvas.height / 2, 50, 50, imgUrl);
     // Bird will not move horizontally! only verticlly!
   }
 
+  // Method to make the bird jump
   jump() {
     this.velocityY = -10;
     // Bird will not move horizontally! only verticlly!
   }
 
+  // Method to apply gravity to the bird
   applyGravity() {
     if (this.velocityY < 10) {
-      this.velocityY += 1;
+      this.velocityY += 1; // Increase the vertical velocity to simulate gravity
     }
   }
 
+  // Method to adjust the tilt of the bird based on its velocity
   tilt() {
     if (this.velocityY < 0) {
-      this.angle = -15;
+      this.angle = -15; // Tilt the bird upwards if it's moving up
     } else if (this.angle < 70) {
-      this.angle += 4;
+      this.angle += 4; // Tilt the bird downwards gradually if it's falling
     }
   }
 }
@@ -135,15 +139,18 @@ class GameStats {
 
   decrementLives() {
     this.lives--;
+    console.log(`Lives remaining: ${this.lives}`);
   }
 
   incrementScore() {
     this.score++;
+    console.log(`Score: ${this.score}`);
   }
 
   reset() {
     this.lives = 3;
     this.score = 0;
+    console.log("Game stats reset");
   }
 }
 
