@@ -206,6 +206,7 @@ class Game {
       case 'prestart':
         this.gameMode = 'waiting'; // Set game mode to 'waiting'
         setTimeout(() => this.gameMode = 'running', 3000); // Wait for 3 seconds before starting the game
+        console.log("swich prestart??????????????????????????????????");
         break;
       case 'running':
         this.bird.jump(); // Make the bird jump
@@ -306,12 +307,12 @@ checkCollision() {
     if (this.collisionPause) return; // Pause the game loop if a collision has occurred
     this.update(); // Update game state
     this.draw(); // Draw game entities and UI
-    this.checkCollision(); // check collisions
+    this.checkCollision(); // check collisions and set new
     if (this.gameMode !== 'over') {
       // requestAnimationFrame(() => this.loop());
       if (this.collisionPause === true) {
-        console.log(`Collision: ${this.collisionPause}!`)
-        this.collisionPause = false;
+        console.log(`Collision: ${this.collisionPause}! Will wait a few secs `);
+        
 
         // .............................................................................................................................................................
 
@@ -323,8 +324,13 @@ checkCollision() {
           console.log(`Now pipes ${this.pipes.length}`);
 
           this.bird.y = myCanvas.height / 2; // Reset bird position
+          this.collisionPause = false;
+          console.log(`Collision: ${this.collisionPause}! back to normal. `)
+
+
 
       }
+
       setTimeout(() => this.loop(), 1000 / 40); // Continue the game loop at 40 FPS
     } else {
       this.draw(); // Draw game entities and UI one last time
