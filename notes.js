@@ -132,6 +132,7 @@ class Pipe extends Entity {
 
 // Class to handle game scores and lives
 class GameStats {
+  static totalScore = 0;
   constructor() {
     this.lives = 3;
     this.score = 0;
@@ -143,7 +144,8 @@ class GameStats {
   }
 
   incrementScore() {
-    this.score++;
+    // this.score++;
+    GameStats.totalScore++;
     console.log(`Score: ${this.score}`);
   }
 
@@ -171,13 +173,42 @@ class Game {
 
   // Initialize event listeners and game setup
   init() {
-    document.getElementById('dragon').addEventListener('click', () => this.selectCharacter('dragon')); // Event listener for dragon character selection
-    document.getElementById('horse').addEventListener('click', () => this.selectCharacter('horse')); // Event listener for horse character selection
+    document.getElementById('dragon').addEventListener('click', () => { this.resetGame(); this.selectCharacter('dragon');}); // Event listener for dragon character selection
+    document.getElementById('horse').addEventListener('click', () => {this.resetGame(); this.selectCharacter('horse'); }); // Event listener for horse character selection
+
     ['touchstart', 'mousedown', 'keydown'].forEach(eventType => {
-      addEventListener(eventType, event => this.handleInput(event)); // Event listeners for player input
+      document.addEventListener(eventType, event => this.handleInput(event)); // Event listeners for player input
     });
-    setInterval(() => this.addPipe(), 2000); // Add pipes at regular intervals (every 2 seconds)
+
+    setInterval(() => this.addPipe(), 4000); // Add pipes at regular intervals (every 2 seconds)
+
   }
+
+
+  // Handle player input
+  handleInput(event) {
+    if (this.collisionPause) return; // Ignore input if the game is paused due to a collision
+
+    switch (this.gameMode) {
+      case 'prestart':
+        // this.gameMode = 'waiting'; // Set game mode to 'waiting'
+        this.gameMode = 'running'; // Wait for 3 seconds before starting the game
+        console.log("swich prestart??????????????????????????????????");
+        break;
+      case 'running':
+        this.bird.jump(); // Make the bird jump
+        break;
+      case 'over':
+        if (new Date() - this.lastGameTime > 1000) { // Check if enough time has passed since the game ended
+          this.resetGame(); // Reset the game state
+          console.log("reset work??????????????????!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+          this.gameMode = 'prestart'; // Set the game mode to 'prestart'
+        }
+        break;
+    }
+    event.preventDefault(); // Prevent the default action for the event (e.g., scrolling the page)
+  }
+
 
   // Select a character and start the game
   selectCharacter(character) {
@@ -185,10 +216,10 @@ class Game {
       ? "https://cdn.shopify.com/s/files/1/0632/2939/5192/files/test2.png" 
       : "https://cdn.shopify.com/s/files/1/0632/2939/5192/files/wwwr.png"; // Select character image URL based on the chosen character
     this.bird.img.src = imgUrl; // Update bird image
-    this.startGame(); // Start the game
+    // this.startGame(); // Start the game
   }
 
-  // Start the game
+  // Start the game??  is it neceassay? can i delete this fucking code?
   startGame() {
     if (this.bird) {
       this.gameMode = 'running'; // Set game mode to 'running'
@@ -198,28 +229,7 @@ class Game {
     }
   }
 
-  // Handle player input
-  handleInput(event) {
-    if (this.collisionPause) return; // Ignore input if the game is paused due to a collision
 
-    switch (this.gameMode) {
-      case 'prestart':
-        this.gameMode = 'waiting'; // Set game mode to 'waiting'
-        setTimeout(() => this.gameMode = 'running', 3000); // Wait for 3 seconds before starting the game
-        console.log("swich prestart??????????????????????????????????");
-        break;
-      case 'running':
-        this.bird.jump(); // Make the bird jump
-        break;
-      case 'over':
-        if (new Date() - this.lastGameTime > 1000) { // Check if enough time has passed since the game ended
-          this.resetGame(); // Reset the game state
-          this.gameMode = 'prestart'; // Set the game mode to 'prestart'
-        }
-        break;
-    }
-    event.preventDefault(); // Prevent the default action for the event (e.g., scrolling the page)
-  }
 
   // Add a pair of pipes (top and bottom) to the game
   addPipe() {
@@ -283,11 +293,11 @@ checkCollision() {
     this.gameView.draw(this.bird, ...this.pipes); // Draw bird and pipes
     this.gameView.drawLives(this.stats.lives); // Draw remaining lives
     if (this.gameMode === 'prestart') {
-      // this.gameView.drawText('Press, touch or click to start', myCanvas.width / 2, myCanvas.height / 4);
+      this.gameView.drawText('Press, touch or click to start', myCanvas.width / 2, myCanvas.height / 4);
       // temp out
     } else if (this.gameMode === 'over') {
       // this.gameView.drawText('Game Over', myCanvas.width / 2, myCanvas.height / 2);
-      // this.gameView.drawText(`Score: ${this.stats.score}`, myCanvas.width / 2, myCanvas.height / 2 + 50);
+      this.gameView.drawText(`Score: ${this.stats.score}`, myCanvas.width / 2, myCanvas.height / 2 + 50);
       // temp out
     }
   }
@@ -324,6 +334,7 @@ checkCollision() {
           console.log(`Now pipes ${this.pipes.length}`);
 
           this.bird.y = myCanvas.height / 2; // Reset bird position
+          this.bird.velocityY = 0;
           this.collisionPause = false;
           console.log(`Collision: ${this.collisionPause}! back to normal. `)
 
@@ -334,12 +345,17 @@ checkCollision() {
       setTimeout(() => this.loop(), 1000 / 40); // Continue the game loop at 40 FPS
     } else {
       this.draw(); // Draw game entities and UI one last time
+      
       this.gameView.drawGameOver(); // Display game over message
+      this.resetGame();
+      setTimeout(() => this.loop(), 1000 / 40);
     }
   }
 
   // Reset the game to its initial state
   resetGame() {
+    console.log("Look, I fucking reset with resetGame function!");
+    // this.gameMode = "running";
     this.bird.y = myCanvas.height / 2; // Reset bird position
     this.bird.velocityY = 0; // Reset bird velocity
     this.pipes = []; // Clear current pipes
